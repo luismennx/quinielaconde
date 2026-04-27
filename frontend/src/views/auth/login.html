@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Quiniela Conde</title>
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="./login.css" />
+</head>
+<body>
+  <main class="phone auth-page login-page">
+    <div class="logo-wrap logo-wrap--large">
+      <img class="logo-img logo-img--login" src="../../assets/img/logo.png" alt="Logo Quiniela Conde" />
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <label class="field-block">
+        <span class="field-label">Correo, Apodo o WhatsApp</span>
+        <span class="field field--with-trailing-icon">
+          <span class="icon">👤</span>
+          <input id="identificador" name="identificador" type="text" placeholder="Ingresa tu usuario" autocomplete="username" />
+        </span>
+      </label>
+
+      <label class="field-block">
+        <span class="field-label">Contraseña</span>
+        <span class="field field--with-trailing-icon">
+          <span class="icon">🔒</span>
+          <input id="password" name="password" type="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" />
+          <button class="icon-button" id="togglePassword" type="button" aria-label="Mostrar u ocultar contraseña">👁️</button>
+        </span>
+      </label>
+
+      <a class="text-link text-link--left" href="./recuperacion.html">¿Olvidaste tu contraseña?</a>
+
+      <p id="mensaje" class="form-message"></p>
+
+      <button class="submit submit--lg" type="submit">ENTRAR</button>
+    </form>
+
+    <div class="login-link login-link--login">
+      ¿No tienes cuenta? <a href="./registro.html">Crear cuenta</a>
+    </div>
+  </main>
+
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="./login.js"></script>
+</body>
+</html>

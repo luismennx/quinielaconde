@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperación - Quiniela Conde</title>
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="./recuperacion.css" />
+</head>
+<body>
+  <main class="phone auth-page recovery-page">
+    <div class="logo-wrap">
+      <img class="logo-img" src="../../assets/img/logo.png" alt="Logo Quiniela Conde" />
+    </div>
+
+    <h1 class="page-title">Recuperar contraseña</h1>
+    <p class="page-copy">Ingresa tu correo, apodo o WhatsApp y te enviaremos las instrucciones para restablecer tu acceso.</p>
+
+    <form id="recoveryForm" class="auth-form recovery-form">
+      <label class="field-block">
+        <span class="field-label">Correo, Apodo o WhatsApp</span>
+        <span class="field">
+          <span class="icon">📩</span>
+          <input id="recoveryValue" name="recoveryValue" type="text" placeholder="Ingresa tu dato de recuperación" />
+        </span>
+      </label>
+
+      <button class="submit submit--lg" type="submit">ENVIAR INSTRUCCIONES</button>
+    </form>
+
+    <div class="login-link login-link--compact">
+      <a href="./login.html">← Volver al inicio de sesión</a>
+    </div>
+  </main>
+
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="./recuperacion.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+.recovery-page {
+  justify-content: flex-start;
+  padding-top: 44px;
+}
+
+.page-title {
+  margin: 24px 0 10px;
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.page-copy {
+  margin: 0 0 30px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.recovery-form {
+  margin-top: 10px;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro - Quiniela Conde</title>
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="./registro.css" />
+</head>
+<body>
+  <main class="phone auth-page register-page">
+    <div class="logo-wrap">
+      <img class="logo-img" src="../../assets/img/logo.png" alt="Logo Quiniela Conde" />
+    </div>
+
+    <p class="subtitle">Crea tu cuenta y comienza a jugar</p>
+
+    <form id="registroForm" class="register-form">
+      <label class="field">
+        <span class="icon">👤</span>
+        <input id="nombre" name="nombre" type="text" placeholder="Escribe tu nombre" />
+      </label>
+
+      <label class="field">
+        <span class="icon">🎮</span>
+        <input id="apodo" name="apodo" type="text" placeholder="Tu apodo" />
+      </label>
+
+      <label class="field">
+        <span class="icon">📞</span>
+        <input id="whatsapp" name="whatsapp" type="tel" placeholder="+52 55..." />
+      </label>
+
+      <label class="field">
+        <span class="icon">✉️</span>
+        <input id="correo" name="correo" type="email" placeholder="ejemplo@email.com" />
+      </label>
+
+      <label class="field">
+        <span class="icon">🔒</span>
+        <input id="password" name="password" type="password" placeholder="Ingresa tu contraseña" />
+      </label>
+
+      <label class="field">
+        <span class="icon">🔒</span>
+        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirma tu contraseña" />
+      </label>
+
+      <label class="terms">
+        <input id="aceptaTerminos" name="aceptaTerminos" type="checkbox" checked />
+        <span>Acepto términos y condiciones</span>
+      </label>
+
+      <p id="mensaje" class="form-message"></p>
+
+      <button class="submit" type="submit">Crear cuenta</button>
+    </form>
+
+    <div class="login-link">
+      ¿Ya tienes cuenta? <a href="./login.html">Inicia sesión</a>
+    </div>
+  </main>
+
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="./registro.js"></script>
+</body>
+</html>
