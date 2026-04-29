@@ -1,6 +1,78 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import pool from "../config/db.js";
+
+export const register = async (req, res) => {
+  try {
+    console.log("🔵 [REGISTER] Body:", req.body);
+
+    const { nombre, apodo, correo, whatsapp, password } = req.body;
+
+    if (!nombre || !apodo || !correo || !password) {
+      console.log("🟡 [REGISTER] Faltan campos");
+      return res.status(400).json({
+        message: "Nombre, apodo, correo y contraseña son obligatorios"
+      });
+    }
+
+    console.log("🟢 [REGISTER] Verificando usuario existente...");
+
+    const [existingUsers] = await pool.query(
+      `SELECT id FROM usuarios 
+       WHERE correo = ? OR apodo = ? OR whatsapp = ?`,
+      [correo, apodo, whatsapp || null]
+    );
+
+    console.log("🟢 [REGISTER] Resultado búsqueda:", existingUsers);
+
+    if (existingUsers.length > 0) {
+      console.log("🔴 [REGISTER] Usuario ya existe");
+      return res.status(409).json({
+        message: "Ya existe una cuenta con ese correo, apodo o WhatsApp"
+      });
+    }
+
+    console.log("🟢 [REGISTER] Encriptando contraseña...");
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    console.log("🟢 [REGISTER] Insertando usuario...");
+
+    const [result] = await pool.query(
+      `INSERT INTO usuarios 
+       (nombre, apodo, correo, whatsapp, password_hash, rol, estado)
+       VALUES (?, ?, ?, ?, ?, 'jugador', 'activo')`,
+      [nombre, apodo, correo, whatsapp || null, passwordHash]
+    );
+
+    console.log("🟢 [REGISTER] Usuario creado ID:", result.insertId);
+
+    return res.status(201).json({
+      message: "Usuario registrado correctamente",
+      usuario: {
+        id: result.insertId,
+        nombre,
+        apodo,
+        correo,
+        whatsapp: whatsapp || null,
+        rol: "jugador",
+        estado: "activo"
+      }
+    });
+
+  } catch (error) {
+    console.error("💥 ERROR EN REGISTER:", error);
+
+    return res.status(500).json({
+      message: "Error interno al registrar usuario",
+      error: error.message
+    });
+  }
+};
+
 export const login = async (req, res) => {
   try {
-    console.log("🔵 [LOGIN] Request body:", req.body);
+    console.log("🔵 [LOGIN] Body:", req.body);
 
     const { identificador, password } = req.body;
 
@@ -32,7 +104,11 @@ export const login = async (req, res) => {
 
     const user = users[0];
 
-    console.log("🟢 [LOGIN] Usuario encontrado:", user);
+    console.log("🟢 [LOGIN] Usuario encontrado:", {
+      id: user.id,
+      correo: user.correo,
+      estado: user.estado
+    });
 
     if (user.estado !== "activo") {
       console.log("🔴 [LOGIN] Usuario inactivo");
@@ -57,7 +133,7 @@ export const login = async (req, res) => {
     console.log("🟢 [LOGIN] Generando token...");
 
     if (!process.env.JWT_SECRET) {
-      console.error("🔴 JWT_SECRET NO DEFINIDO");
+      console.error("🔴 [LOGIN] JWT_SECRET NO DEFINIDO");
       throw new Error("JWT_SECRET no definido");
     }
 
@@ -93,7 +169,55 @@ export const login = async (req, res) => {
 
     return res.status(500).json({
       message: "Error interno al iniciar sesión",
-      error: error.message // 👈 IMPORTANTE para debug
+      error: error.message
+    });
+  }
+};
+
+export const recoverPassword = async (req, res) => {
+  try {
+    console.log("🔵 [RECOVER] Body:", req.body);
+
+    const { identificador } = req.body;
+
+    if (!identificador) {
+      console.log("🟡 [RECOVER] Falta identificador");
+      return res.status(400).json({
+        message: "Correo o WhatsApp es obligatorio"
+      });
+    }
+
+    console.log("🟢 [RECOVER] Buscando usuario...");
+
+    const [users] = await pool.query(
+      `SELECT id, nombre, correo, whatsapp
+       FROM usuarios
+       WHERE correo = ? OR whatsapp = ?
+       LIMIT 1`,
+      [identificador, identificador]
+    );
+
+    console.log("🟢 [RECOVER] Resultado query:", users);
+
+    if (users.length === 0) {
+      console.log("🔴 [RECOVER] Usuario no encontrado");
+      return res.status(404).json({
+        message: "No existe una cuenta con ese correo o WhatsApp"
+      });
+    }
+
+    console.log("🟢 [RECOVER] Usuario encontrado");
+
+    return res.json({
+      message: "Solicitud de recuperación recibida. Próximamente enviaremos instrucciones."
+    });
+
+  } catch (error) {
+    console.error("💥 ERROR EN RECOVER:", error);
+
+    return res.status(500).json({
+      message: "Error interno al recuperar contraseña",
+      error: error.message
     });
   }
 };
