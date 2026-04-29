@@ -73,10 +73,10 @@ export const login = async (req, res) => {
     );
 
     if (users.length === 0) {
-      return res.status(401).json({
-        message: "Usuario o contraseña incorrectos"
-      });
-    }
+  return res.status(404).json({
+    message: "Usuario no encontrado"
+  });
+}
 
     const user = users[0];
 
