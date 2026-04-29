@@ -30,6 +30,9 @@ form.addEventListener("submit", async (event) => {
   }
 
   try {
+    console.log("🔵 LOGIN API URL:", `${API_URL}/api/auth/login`);
+    console.log("🔵 LOGIN BODY:", { identificador, password: "********" });
+
     const respuesta = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
@@ -38,9 +41,32 @@ form.addEventListener("submit", async (event) => {
       body: JSON.stringify({ identificador, password })
     });
 
-    const data = await respuesta.json();
+    console.log("🟡 STATUS:", respuesta.status);
+    console.log("🟡 OK:", respuesta.ok);
+    console.log("🟡 CONTENT-TYPE:", respuesta.headers.get("content-type"));
+
+    const textoRespuesta = await respuesta.text();
+
+    console.log("🟠 RESPUESTA RAW DEL SERVIDOR:");
+    console.log(textoRespuesta);
+
+    let data = {};
+
+    try {
+      data = textoRespuesta ? JSON.parse(textoRespuesta) : {};
+      console.log("🟢 RESPUESTA JSON PARSEADA:", data);
+    } catch (parseError) {
+      console.error("🔴 ERROR PARSEANDO JSON:", parseError);
+      console.error("🔴 EL SERVIDOR NO RESPONDIÓ JSON");
+      throw new Error("El servidor respondió algo que no es JSON");
+    }
 
     if (!respuesta.ok) {
+      console.error("🔴 ERROR HTTP LOGIN:", {
+        status: respuesta.status,
+        data
+      });
+
       if (respuesta.status === 404) {
         mostrarAlerta({
           tipo: "warning",
@@ -57,9 +83,9 @@ form.addEventListener("submit", async (event) => {
 
       mostrarAlerta({
         tipo: "error",
-        titulo: "Datos incorrectos",
-        mensaje: data.message || "El usuario o la contraseña no son correctos. Intenta nuevamente.",
-        duracion: 2200
+        titulo: `Error ${respuesta.status}`,
+        mensaje: data.error || data.message || "Error desconocido en el servidor.",
+        duracion: 5000
       });
       return;
     }
@@ -74,18 +100,19 @@ form.addEventListener("submit", async (event) => {
       duracion: 2000,
       redireccion: "../home/home.html"
     });
+
   } catch (error) {
-    console.error("Error en login:", error);
+    console.error("💥 ERROR FINAL EN LOGIN:", error);
 
     mostrarAlerta({
-  tipo: "network",
-  titulo: "Error de conexión",
-  mensaje: "No pudimos iniciar sesión en este momento. Revisa tu conexión e inténtalo de nuevo.",
-  duracion: 3200,
-  accionTexto: "Reintentar",
-  accionCallback: () => {
-    location.reload();
-  }
-});
+      tipo: "network",
+      titulo: "Error de conexión",
+      mensaje: error.message || "No pudimos iniciar sesión en este momento.",
+      duracion: 5000,
+      accionTexto: "Reintentar",
+      accionCallback: () => {
+        location.reload();
+      }
+    });
   }
 });
