@@ -84,7 +84,12 @@ form.addEventListener("submit", async (event) => {
       mostrarAlerta({
         tipo: "error",
         titulo: `Error ${respuesta.status}`,
-        mensaje: data.error || data.message || "Error desconocido en el servidor.",
+        mensaje:
+  data?.debug?.sqlMessage ||
+  data?.debug?.message ||
+  data?.error ||
+  data?.message ||
+  "Error desconocido en el servidor.",
         duracion: 5000
       });
       return;
@@ -102,16 +107,26 @@ form.addEventListener("submit", async (event) => {
     });
 
   } catch (error) {
-    console.error("💥 ERROR FINAL EN LOGIN:", error);
+    console.error("💥 ERROR REAL EN LOGIN COMPLETO:");
+    console.error("name:", error?.name);
+    console.error("message:", error?.message);
+    console.error("code:", error?.code);
+    console.error("errno:", error?.errno);
+    console.error("sqlMessage:", error?.sqlMessage);
+    console.error("sql:", error?.sql);
+    console.error("stack:", error?.stack);
+    console.error("error completo:", error);
 
-    mostrarAlerta({
-      tipo: "network",
-      titulo: "Error de conexión",
-      mensaje: error.message || "No pudimos iniciar sesión en este momento.",
-      duracion: 5000,
-      accionTexto: "Reintentar",
-      accionCallback: () => {
-        location.reload();
+    return res.status(500).json({
+      message: "Error interno al iniciar sesión",
+      debug: {
+        name: error?.name || null,
+        message: error?.message || null,
+        code: error?.code || null,
+        errno: error?.errno || null,
+        sqlMessage: error?.sqlMessage || null,
+        sql: error?.sql || null,
+        stack: error?.stack || null
       }
     });
   }
