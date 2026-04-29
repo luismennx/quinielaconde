@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
 
+console.log("🚀 VERSION NUEVA LOGIN ACTIVA");
+
 export const register = async (req, res) => {
   try {
     console.log("🔵 [REGISTER] Body:", req.body);
@@ -165,11 +167,27 @@ export const login = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("💥 ERROR REAL EN LOGIN:", error);
+    console.error("💥 ERROR REAL EN LOGIN COMPLETO:");
+    console.error("name:", error?.name);
+    console.error("message:", error?.message);
+    console.error("code:", error?.code);
+    console.error("errno:", error?.errno);
+    console.error("sqlMessage:", error?.sqlMessage);
+    console.error("sql:", error?.sql);
+    console.error("stack:", error?.stack);
+    console.error("error completo:", error);
 
     return res.status(500).json({
       message: "Error interno al iniciar sesión",
-      error: error.message
+      debug: {
+        name: error?.name || null,
+        message: error?.message || null,
+        code: error?.code || null,
+        errno: error?.errno || null,
+        sqlMessage: error?.sqlMessage || null,
+        sql: error?.sql || null,
+        stack: error?.stack || null
+      }
     });
   }
 };
