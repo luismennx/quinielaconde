@@ -21,3 +21,31 @@
 .recovery-form {
   margin-top: 10px;
 }
+
+.code-inputs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin: 28px 0 18px;
+}
+
+.code-inputs input {
+  width: 100%;
+  height: 58px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 255, 136, 0.35);
+  background: rgba(28, 28, 30, 0.88);
+  color: #f3f4f6;
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 0 16px rgba(0, 255, 136, 0.12);
+}
+
+.code-inputs input:focus {
+  border-color: #00ff88;
+  box-shadow: 0 0 22px rgba(0, 255, 136, 0.32);
+}

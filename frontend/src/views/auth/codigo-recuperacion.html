@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Código de recuperación - Quiniela Conde</title>
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="./recuperacion.css" />
+</head>
+<body>
+  <main class="phone auth-page recovery-page">
+    <div class="logo-wrap">
+      <img class="logo-img" src="../../assets/img/logo.png" alt="Logo Quiniela Conde" />
+    </div>
+
+    <h1 class="page-title">Ingresa el código</h1>
+
+    <p class="page-copy">
+      Enviamos un código de 6 dígitos para restablecer tu contraseña.
+    </p>
+
+    <form id="codigoForm" class="auth-form recovery-form">
+      <div class="code-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" />
+        <input type="text" maxlength="1" inputmode="numeric" />
+        <input type="text" maxlength="1" inputmode="numeric" />
+        <input type="text" maxlength="1" inputmode="numeric" />
+        <input type="text" maxlength="1" inputmode="numeric" />
+        <input type="text" maxlength="1" inputmode="numeric" />
+      </div>
+
+      <button class="submit submit--lg" type="submit">CONTINUAR</button>
+    </form>
+
+    <div class="login-link login-link--compact">
+      ¿No recibiste el código?
+      <a href="./recuperacion.html">Reenviar código</a>
+    </div>
+  </main>
+
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="./codigo-recuperacion.js"></script>
+</body>
+</html>
