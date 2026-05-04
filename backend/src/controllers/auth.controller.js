@@ -168,14 +168,28 @@ export const recoverPassword = async (req, res) => {
     console.log("Código de recuperación:", codigo);
 
     // 🔥 ENVÍO DE CORREO
-    if (user.correo) {
-      await enviarCodigoRecuperacion({
-        to: user.correo,
-        nombre: user.nombre,
-        codigo
-      });
-    }
+    try {
+  if (user.correo) {
+    await enviarCodigoRecuperacion({
+      to: user.correo,
+      nombre: user.nombre,
+      codigo
+    });
+  }
+} catch (emailError) {
+  console.error("Error al enviar correo:", {
+    message: emailError.message,
+    code: emailError.code,
+    command: emailError.command,
+    response: emailError.response
+  });
 
+  return res.status(500).json({
+    message: "El código se generó, pero no se pudo enviar el correo",
+    error: emailError.message,
+    code: emailError.code || null
+  });
+}
     return res.json({
       message: "Código de recuperación enviado correctamente"
     });
