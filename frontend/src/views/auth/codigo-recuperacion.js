@@ -1,3 +1,4 @@
+import API_URL from "../../js/api.js";
 import { mostrarAlerta } from "../../components/ui/alert.js";
 
 const form = document.querySelector("#codigoForm");
@@ -9,7 +10,7 @@ if (!recoveryIdentificador) {
   window.location.href = "./recuperacion.html";
 }
 
-inputs[0].focus();
+inputs[0]?.focus();
 
 inputs.forEach((input, index) => {
   input.addEventListener("input", () => {
@@ -29,7 +30,10 @@ inputs.forEach((input, index) => {
   input.addEventListener("paste", (event) => {
     event.preventDefault();
 
-    const texto = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    const texto = event.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
 
     texto.split("").forEach((numero, i) => {
       if (inputs[i]) inputs[i].value = numero;
@@ -40,10 +44,10 @@ inputs.forEach((input, index) => {
   });
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const codigo = [...inputs].map(input => input.value).join("");
+  const codigo = [...inputs].map((input) => input.value).join("");
 
   if (codigo.length !== 6) {
     mostrarAlerta({
@@ -55,13 +59,47 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  localStorage.setItem("recovery_code", codigo);
+  try {
+    const response = await fetch(`${API_URL}/auth/verify-recovery-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        identificador: recoveryIdentificador,
+        codigo
+      })
+    });
 
-  mostrarAlerta({
-    tipo: "success",
-    titulo: "Código validado",
-    mensaje: "Ahora crea tu nueva contraseña.",
-    duracion: 1600,
-    redireccion: "./nueva-password.html"
-  });
+    const data = await response.json();
+
+    if (!response.ok) {
+      mostrarAlerta({
+        tipo: "error",
+        titulo: "Código incorrecto",
+        mensaje: data.message || "El código no es válido o expiró.",
+        duracion: 2400
+      });
+      return;
+    }
+
+    localStorage.setItem("recovery_code", codigo);
+
+    mostrarAlerta({
+      tipo: "success",
+      titulo: "Código validado",
+      mensaje: "Ahora crea tu nueva contraseña.",
+      duracion: 1600,
+      redireccion: "./nueva-password.html"
+    });
+  } catch (error) {
+    console.error("Error al validar código:", error);
+
+    mostrarAlerta({
+      tipo: "network",
+      titulo: "Error de conexión",
+      mensaje: "No pudimos validar el código.",
+      duracion: 2500
+    });
+  }
 });

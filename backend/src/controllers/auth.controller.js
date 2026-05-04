@@ -239,3 +239,166 @@ export const recoverPassword = async (req, res) => {
     });
   }
 };
+
+//Recuperaacion password
+export const recoverPassword = async (req, res) => {
+  try {
+    const { identificador } = req.body;
+
+    if (!identificador) {
+      return res.status(400).json({
+        message: "Correo, apodo o WhatsApp es obligatorio"
+      });
+    }
+
+    const [users] = await pool.query(
+      `SELECT id, nombre, correo, apodo, whatsapp
+       FROM usuarios
+       WHERE correo = ? OR apodo = ? OR whatsapp = ?
+       LIMIT 1`,
+      [identificador, identificador, identificador]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+
+    const user = users[0];
+
+    const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await pool.query(
+      `UPDATE password_resets 
+       SET usado = 1
+       WHERE usuario_id = ? AND usado = 0`,
+      [user.id]
+    );
+
+    await pool.query(
+      `INSERT INTO password_resets (usuario_id, codigo, expira_en)
+       VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))`,
+      [user.id, codigo]
+    );
+
+    console.log("Código de recuperación:", codigo);
+
+    return res.json({
+      message: "Código de recuperación generado correctamente",
+      // TEMPORAL SOLO PARA DESARROLLO
+      codigo
+    });
+  } catch (error) {
+    console.error("Error en recoverPassword:", error);
+
+    return res.status(500).json({
+      message: "Error interno al solicitar recuperación"
+    });
+  }
+};
+
+export const verifyRecoveryCode = async (req, res) => {
+  try {
+    const { identificador, codigo } = req.body;
+
+    if (!identificador || !codigo) {
+      return res.status(400).json({
+        message: "Identificador y código son obligatorios"
+      });
+    }
+
+    const [rows] = await pool.query(
+      `SELECT pr.id, pr.usuario_id
+       FROM password_resets pr
+       INNER JOIN usuarios u ON u.id = pr.usuario_id
+       WHERE (u.correo = ? OR u.apodo = ? OR u.whatsapp = ?)
+       AND pr.codigo = ?
+       AND pr.usado = 0
+       AND pr.expira_en > NOW()
+       ORDER BY pr.id DESC
+       LIMIT 1`,
+      [identificador, identificador, identificador, codigo]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({
+        message: "Código inválido o expirado"
+      });
+    }
+
+    return res.json({
+      message: "Código validado correctamente"
+    });
+  } catch (error) {
+    console.error("Error en verifyRecoveryCode:", error);
+
+    return res.status(500).json({
+      message: "Error interno al validar código"
+    });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { identificador, codigo, password } = req.body;
+
+    if (!identificador || !codigo || !password) {
+      return res.status(400).json({
+        message: "Identificador, código y nueva contraseña son obligatorios"
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        message: "La contraseña debe tener al menos 8 caracteres"
+      });
+    }
+
+    const [rows] = await pool.query(
+      `SELECT pr.id, pr.usuario_id
+       FROM password_resets pr
+       INNER JOIN usuarios u ON u.id = pr.usuario_id
+       WHERE (u.correo = ? OR u.apodo = ? OR u.whatsapp = ?)
+       AND pr.codigo = ?
+       AND pr.usado = 0
+       AND pr.expira_en > NOW()
+       ORDER BY pr.id DESC
+       LIMIT 1`,
+      [identificador, identificador, identificador, codigo]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({
+        message: "Código inválido o expirado"
+      });
+    }
+
+    const reset = rows[0];
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      `UPDATE usuarios
+       SET password_hash = ?
+       WHERE id = ?`,
+      [passwordHash, reset.usuario_id]
+    );
+
+    await pool.query(
+      `UPDATE password_resets
+       SET usado = 1
+       WHERE id = ?`,
+      [reset.id]
+    );
+
+    return res.json({
+      message: "Contraseña actualizada correctamente"
+    });
+  } catch (error) {
+    console.error("Error en resetPassword:", error);
+
+    return res.status(500).json({
+      message: "Error interno al actualizar contraseña"
+    });
+  }
+};

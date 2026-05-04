@@ -1,3 +1,4 @@
+import API_URL from "../../js/api.js";
 import { mostrarAlerta } from "../../components/ui/alert.js";
 
 const form = document.querySelector("#nuevaPasswordForm");
@@ -25,7 +26,7 @@ toggleConfirmPasswordBtn.addEventListener("click", () => {
   toggleConfirmPasswordBtn.textContent = esPassword ? "🙈" : "👁️";
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const password = passwordInput.value.trim();
@@ -61,14 +62,49 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  localStorage.removeItem("recovery_identificador");
-  localStorage.removeItem("recovery_code");
+  try {
+    const response = await fetch(`${API_URL}/auth/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        identificador: recoveryIdentificador,
+        codigo: recoveryCode,
+        password
+      })
+    });
 
-  mostrarAlerta({
-    tipo: "success",
-    titulo: "Contraseña actualizada",
-    mensaje: "Ya puedes iniciar sesión con tu nueva contraseña.",
-    duracion: 2000,
-    redireccion: "./login.html"
-  });
+    const data = await response.json();
+
+    if (!response.ok) {
+      mostrarAlerta({
+        tipo: "error",
+        titulo: "No se pudo actualizar",
+        mensaje: data.message || "Intenta nuevamente.",
+        duracion: 2500
+      });
+      return;
+    }
+
+    localStorage.removeItem("recovery_identificador");
+    localStorage.removeItem("recovery_code");
+
+    mostrarAlerta({
+      tipo: "success",
+      titulo: "Contraseña actualizada",
+      mensaje: "Ya puedes iniciar sesión con tu nueva contraseña.",
+      duracion: 2000,
+      redireccion: "./login.html"
+    });
+  } catch (error) {
+    console.error("Error al actualizar contraseña:", error);
+
+    mostrarAlerta({
+      tipo: "network",
+      titulo: "Error de conexión",
+      mensaje: "No pudimos actualizar tu contraseña.",
+      duracion: 2500
+    });
+  }
 });
