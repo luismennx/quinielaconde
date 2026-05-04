@@ -1,7 +1,18 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+console.log("EMAIL CONFIG:", {
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT,
+  user: process.env.EMAIL_USER,
+  from: process.env.EMAIL_FROM,
+  hasPass: Boolean(process.env.EMAIL_PASS)
+});
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
+  host: process.env.EMAIL_HOST || "smtp.gmail.com",
   port: Number(process.env.EMAIL_PORT || 465),
   secure: true,
   auth: {
@@ -11,7 +22,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const enviarCodigoRecuperacion = async ({ to, nombre, codigo }) => {
-  await transporter.sendMail({
+  return transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to,
     subject: "Código de recuperación - Quiniela Conde",
