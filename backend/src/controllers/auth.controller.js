@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
+import { enviarCodigoRecuperacion } from "../services/email.service.js";
 
 export const register = async (req, res) => {
   try {
@@ -95,19 +96,10 @@ export const login = async (req, res) => {
       });
     }
 
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET no definido");
-    }
-
     const token = jwt.sign(
-      {
-        id: user.id,
-        rol: user.rol
-      },
+      { id: user.id, rol: user.rol },
       process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN || "7d"
-      }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     return res.json({
@@ -160,13 +152,13 @@ export const recoverPassword = async (req, res) => {
     const user = users[0];
     const codigo = Math.floor(100000 + Math.random() * 900000).toString();
 
+    // Invalidar códigos anteriores
     await pool.query(
-      `UPDATE password_resets 
-       SET usado = 1
-       WHERE usuario_id = ? AND usado = 0`,
+      `UPDATE password_resets SET usado = 1 WHERE usuario_id = ?`,
       [user.id]
     );
 
+    // Insertar nuevo código
     await pool.query(
       `INSERT INTO password_resets (usuario_id, codigo, expira_en)
        VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))`,
@@ -175,10 +167,19 @@ export const recoverPassword = async (req, res) => {
 
     console.log("Código de recuperación:", codigo);
 
+    // 🔥 ENVÍO DE CORREO
+    if (user.correo) {
+      await enviarCodigoRecuperacion({
+        to: user.correo,
+        nombre: user.nombre,
+        codigo
+      });
+    }
+
     return res.json({
-      message: "Código de recuperación generado correctamente",
-      codigo
+      message: "Código de recuperación enviado correctamente"
     });
+
   } catch (error) {
     console.error("Error en recoverPassword:", error);
 
@@ -193,12 +194,6 @@ export const verifyRecoveryCode = async (req, res) => {
   try {
     const { identificador, codigo } = req.body;
 
-    if (!identificador || !codigo) {
-      return res.status(400).json({
-        message: "Identificador y código son obligatorios"
-      });
-    }
-
     const [rows] = await pool.query(
       `SELECT pr.id, pr.usuario_id
        FROM password_resets pr
@@ -207,7 +202,6 @@ export const verifyRecoveryCode = async (req, res) => {
        AND pr.codigo = ?
        AND pr.usado = 0
        AND pr.expira_en > NOW()
-       ORDER BY pr.id DESC
        LIMIT 1`,
       [identificador, identificador, identificador, codigo]
     );
@@ -218,15 +212,11 @@ export const verifyRecoveryCode = async (req, res) => {
       });
     }
 
-    return res.json({
-      message: "Código validado correctamente"
-    });
-  } catch (error) {
-    console.error("Error en verifyRecoveryCode:", error);
+    return res.json({ message: "Código válido" });
 
+  } catch (error) {
     return res.status(500).json({
-      message: "Error interno al validar código",
-      error: error.message
+      message: "Error al validar código"
     });
   }
 };
@@ -235,18 +225,6 @@ export const resetPassword = async (req, res) => {
   try {
     const { identificador, codigo, password } = req.body;
 
-    if (!identificador || !codigo || !password) {
-      return res.status(400).json({
-        message: "Identificador, código y nueva contraseña son obligatorios"
-      });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({
-        message: "La contraseña debe tener al menos 8 caracteres"
-      });
-    }
-
     const [rows] = await pool.query(
       `SELECT pr.id, pr.usuario_id
        FROM password_resets pr
@@ -255,7 +233,6 @@ export const resetPassword = async (req, res) => {
        AND pr.codigo = ?
        AND pr.usado = 0
        AND pr.expira_en > NOW()
-       ORDER BY pr.id DESC
        LIMIT 1`,
       [identificador, identificador, identificador, codigo]
     );
@@ -266,32 +243,25 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    const reset = rows[0];
     const passwordHash = await bcrypt.hash(password, 10);
 
     await pool.query(
-      `UPDATE usuarios
-       SET password_hash = ?
-       WHERE id = ?`,
-      [passwordHash, reset.usuario_id]
+      `UPDATE usuarios SET password_hash = ? WHERE id = ?`,
+      [passwordHash, rows[0].usuario_id]
     );
 
     await pool.query(
-      `UPDATE password_resets
-       SET usado = 1
-       WHERE id = ?`,
-      [reset.id]
+      `UPDATE password_resets SET usado = 1 WHERE id = ?`,
+      [rows[0].id]
     );
 
     return res.json({
       message: "Contraseña actualizada correctamente"
     });
-  } catch (error) {
-    console.error("Error en resetPassword:", error);
 
+  } catch (error) {
     return res.status(500).json({
-      message: "Error interno al actualizar contraseña",
-      error: error.message
+      message: "Error al actualizar contraseña"
     });
   }
 };
