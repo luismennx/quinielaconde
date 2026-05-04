@@ -31,15 +31,25 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
+      if (response.status === 404) {
+        mostrarAlerta({
+          tipo: "warning",
+          titulo: "Usuario no encontrado",
+          mensaje: data.message || "No encontramos una cuenta con esos datos.",
+          duracion: 2800,
+          accionTexto: "Crear cuenta",
+          accionCallback: () => {
+            window.location.href = "./registro.html";
+          }
+        });
+        return;
+      }
+
       mostrarAlerta({
-        tipo: "warning",
-        titulo: "Usuario no encontrado",
-        mensaje: data.message || "No encontramos una cuenta con esos datos.",
-        duracion: 2800,
-        accionTexto: "Crear cuenta",
-        accionCallback: () => {
-          window.location.href = "./registro.html";
-        }
+        tipo: "error",
+        titulo: "Error al enviar código",
+        mensaje: data.message || "No pudimos enviar el código.",
+        duracion: 3000
       });
       return;
     }
@@ -49,7 +59,7 @@ form.addEventListener("submit", async (event) => {
     mostrarAlerta({
       tipo: "success",
       titulo: "Código enviado",
-      mensaje: "Te enviamos un código de recuperación.",
+      mensaje: "Te enviamos un código de recuperación a tu correo.",
       duracion: 1800,
       redireccion: "./codigo-recuperacion.html"
     });
@@ -59,7 +69,7 @@ form.addEventListener("submit", async (event) => {
     mostrarAlerta({
       tipo: "network",
       titulo: "Error de conexión",
-      mensaje: "No pudimos enviar el código. Intenta nuevamente.",
+      mensaje: "No pudimos conectar con el servidor.",
       duracion: 2600
     });
   }
