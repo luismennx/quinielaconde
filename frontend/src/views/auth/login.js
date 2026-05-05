@@ -30,7 +30,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   try {
-    console.log("🔵 LOGIN API URL:", `${API_URL}/api/auth/login`);
+    console.log("🔵 LOGIN API URL:", `${API_URL}/auth/login`);
     console.log("🔵 LOGIN BODY:", { identificador, password: "********" });
 
     const respuesta = await fetch(`${API_URL}/auth/login`, {
