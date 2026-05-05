@@ -18,24 +18,42 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
-  }
+  },
+
+  // Evita que Render/frontend se queden en pending
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 5000
 });
 
 export const enviarCodigoRecuperacion = async ({ to, nombre, codigo }) => {
+  if (!to) {
+    throw new Error("No hay correo destinatario");
+  }
+
   return transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+    from: process.env.EMAIL_FROM || `Quiniela Conde <${process.env.EMAIL_USER}>`,
     to,
     subject: "Código de recuperación - Quiniela Conde",
     html: `
-      <div style="font-family: Arial, sans-serif; background:#0b0b0b; color:#ffffff; padding:24px;">
-        <h2 style="color:#00ff88;">Quiniela Conde</h2>
-        <p>Hola ${nombre || ""},</p>
+      <div style="font-family: Arial, sans-serif; background:#0b0b0b; color:#ffffff; padding:24px; border-radius:12px;">
+        <h2 style="color:#00ff88; margin-bottom:16px;">Quiniela Conde</h2>
+
+        <p>Hola ${nombre || "jugador"},</p>
+
+        <p>Recibimos una solicitud para restablecer tu contraseña.</p>
+
         <p>Tu código de recuperación es:</p>
+
         <div style="font-size:32px; font-weight:800; letter-spacing:6px; color:#00ff88; margin:20px 0;">
           ${codigo}
         </div>
+
         <p>Este código vence en 10 minutos.</p>
-        <p>Si no solicitaste este cambio, ignora este correo.</p>
+
+        <p style="color:#b5bcc6; font-size:13px;">
+          Si no solicitaste este cambio, puedes ignorar este correo.
+        </p>
       </div>
     `
   });
