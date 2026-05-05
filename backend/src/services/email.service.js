@@ -11,19 +11,20 @@ console.log("EMAIL CONFIG:", {
   hasPass: Boolean(process.env.EMAIL_PASS)
 });
 
+const emailPort = Number(process.env.EMAIL_PORT || 587);
+
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || "smtp.gmail.com",
-  port: Number(process.env.EMAIL_PORT || 465),
-  secure: true,
+  port: emailPort,
+  secure: emailPort === 465,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
-
-  // Evita que Render/frontend se queden en pending
-  connectionTimeout: 5000,
-  greetingTimeout: 5000,
-  socketTimeout: 5000
+  family: 4,
+  connectionTimeout: 8000,
+  greetingTimeout: 8000,
+  socketTimeout: 8000
 });
 
 export const enviarCodigoRecuperacion = async ({ to, nombre, codigo }) => {
