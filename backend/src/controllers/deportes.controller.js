@@ -10,11 +10,11 @@ export const obtenerDeportesConLigas = async (req, res) => {
         l.id AS liga_id,
         l.nombre AS liga_nombre,
         l.logo AS liga_logo,
-        l.fecha_cierre
+        l.fecha_cierre AS liga_fecha_cierre
       FROM deportes d
       LEFT JOIN ligas l 
         ON l.deporte_id = d.id
-        AND l.estado = 'activa'
+        AND l.estado = 'activo'
       WHERE d.estado = 'activo'
       ORDER BY d.id ASC, l.id ASC
     `);
@@ -36,19 +36,22 @@ export const obtenerDeportesConLigas = async (req, res) => {
           id: row.liga_id,
           nombre: row.liga_nombre,
           logo: row.liga_logo,
-          fecha_cierre: row.fecha_cierre
+          fecha_cierre: row.liga_fecha_cierre
         });
       }
     });
 
-    const deportes = Object.values(deportesMap);
-
-    return res.json(deportes);
+    return res.json(Object.values(deportesMap));
   } catch (error) {
     console.error("Error obteniendo deportes y ligas:", error);
 
     return res.status(500).json({
-      message: "Error interno al obtener deportes y ligas"
+      message: "Error interno al obtener deportes y ligas",
+      debug: {
+        message: error.message,
+        code: error.code,
+        sqlMessage: error.sqlMessage
+      }
     });
   }
 };
