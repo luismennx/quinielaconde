@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jugar | Quiniela Conde</title>
+
+  <link rel="stylesheet" href="./jugar.css" />
+</head>
+<body>
+
+  <main class="app">
+
+    <header class="topbar">
+      <img src="../../assets/img/logo.png" alt="Quiniela Conde" class="logo" />
+
+      <div class="top-actions">
+        <button class="icon-btn notification-btn">
+          🔔
+          <span class="badge">2</span>
+        </button>
+
+        <div class="balance">
+          <span>$1,250</span>
+          <button class="add-btn">+</button>
+        </div>
+
+        <button class="menu-btn">☰</button>
+      </div>
+    </header>
+
+    <section class="screen-header">
+      <h1>JUGAR</h1>
+      <p>Elige un deporte y una liga para comenzar tu quiniela.</p>
+    </section>
+
+    <section id="sportsContainer" class="sports-container"></section>
+
+    <nav class="bottom-nav">
+      <a href="../perfil/perfil.html" class="nav-item">
+        <span>👤</span>
+        <small>Perfil</small>
+      </a>
+
+      <a href="./jugar.html" class="nav-item active">
+        <span>🎮</span>
+        <small>Jugar</small>
+      </a>
+
+      <a href="../mis-juegos/mis-juegos.html" class="nav-item">
+        <span>🎟️</span>
+        <small>Mis juegos</small>
+      </a>
+
+      <a href="../resultados/resultados.html" class="nav-item">
+        <span>📊</span>
+        <small>Resultados</small>
+      </a>
+    </nav>
+
+  </main>
+
+  <script src="./jugar.js"></script>
+</body>
+</html>
