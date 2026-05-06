@@ -103,7 +103,7 @@ form.addEventListener("submit", async (event) => {
       titulo: "Inicio de sesión exitoso",
       mensaje: "Bienvenido de nuevo 👋\nTu acceso fue correcto, te estamos redirigiendo...",
       duracion: 2000,
-      redireccion: "../home/home.html"
+      redireccion: "../jugar/jugar.html"
     });
 
   } catch (error) {
