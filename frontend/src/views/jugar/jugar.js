@@ -62,7 +62,9 @@ function renderDeportes(deportes) {
       <div class="leagues-list">
         ${deporte.ligas.map((liga) => `
           <button class="league-card" data-liga-id="${liga.id}">
-            <div class="league-logo">${liga.logo || "🏆"}</div>
+            <div class="league-logo">
+  <img src="https://quinielaconde.onrender.com${liga.logo}" alt="${liga.nombre}">
+</div>
 
             <div class="league-info">
               <h3>${liga.nombre}</h3>
