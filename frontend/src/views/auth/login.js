@@ -99,12 +99,15 @@ form.addEventListener("submit", async (event) => {
     localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
     mostrarAlerta({
-      tipo: "success",
-      titulo: "Inicio de sesión exitoso",
-      mensaje: "Bienvenido de nuevo 👋\nTu acceso fue correcto, te estamos redirigiendo...",
-      duracion: 2000,
-      redireccion: "../jugar/jugar.html"
-    });
+  tipo: "success",
+  titulo: "Inicio de sesión exitoso",
+  mensaje: "Bienvenido de nuevo 👋\nTu acceso fue correcto, te estamos redirigiendo...",
+  duracion: 1600
+});
+
+setTimeout(() => {
+  window.location.href = "../jugar/jugar.html";
+}, 1600);
 
   } catch (error) {
     console.error("💥 ERROR REAL EN LOGIN COMPLETO:");
