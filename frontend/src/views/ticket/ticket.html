@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Ticket | Quiniela Conde</title>
+  <link rel="stylesheet" href="./ticket.css" />
+</head>
+<body>
+
+  <main class="app">
+
+    <header class="topbar">
+      <img src="../../assets/img/logo.png" alt="Quiniela Conde" class="logo" />
+
+      <div class="top-actions">
+        <div class="balance">
+          <span>$250.00</span>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="ticket-header">
+      <h1>RESUMEN DE JUEGO</h1>
+      <p id="ticketSubtitle">Verifica tus pronósticos antes de confirmar.</p>
+    </section>
+
+    <section class="ticket-card">
+
+      <div class="ticket-info">
+        <div>
+          <span>Liga</span>
+          <strong>Mundial 2026</strong>
+        </div>
+
+        <div>
+          <span>Jornada</span>
+          <strong id="jornadaNombre">Cargando...</strong>
+        </div>
+
+        <div>
+          <span>Costo</span>
+          <strong>$30.00 MXN</strong>
+        </div>
+      </div>
+
+      <div id="resumenContainer" class="resumen-container">
+        <p class="loading">Cargando resumen...</p>
+      </div>
+
+      <div class="ticket-total">
+        <span>Total a pagar</span>
+        <strong>$30.00 MXN</strong>
+      </div>
+
+      <button id="confirmarJuegoBtn" class="confirm-btn">
+        CONFIRMAR JUEGO
+      </button>
+
+      <button id="editarJuegoBtn" class="edit-btn">
+        EDITAR PRONÓSTICOS
+      </button>
+
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="../perfil/perfil.html" class="nav-item">
+        <span>👤</span>
+        <small>Mi perfil</small>
+      </a>
+
+      <a href="../jugar/jugar.html" class="nav-item active">
+        <span>⚽</span>
+        <small>Jugar</small>
+      </a>
+
+      <a href="../mis-juegos/mis-juegos.html" class="nav-item">
+        <span>🎟️</span>
+        <small>Mis juegos</small>
+      </a>
+
+      <a href="../resultados/resultados.html" class="nav-item">
+        <span>📊</span>
+        <small>Resultados</small>
+      </a>
+    </nav>
+
+  </main>
+
+  <script src="./ticket.js"></script>
+</body>
+</html>
