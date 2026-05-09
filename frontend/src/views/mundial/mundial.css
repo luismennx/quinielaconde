@@ -1,0 +1,333 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #050505;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+  background:
+    radial-gradient(circle at top, rgba(100,255,80,.10), transparent 35%),
+    linear-gradient(180deg, #111111, #050505);
+}
+
+/* TOPBAR */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 82px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #78ff3b;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.add-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 5px;
+  background: #78ff3b;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* HERO */
+
+.hero-mundial {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(44,44,44,.85),
+      rgba(12,12,12,.95)
+    );
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.trophy {
+  font-size: 50px;
+}
+
+.hero-mundial h1 {
+  font-size: 26px;
+  font-style: italic;
+  color: #78ff3b;
+}
+
+.hero-mundial p {
+  margin-top: 4px;
+  color: #d0d0d0;
+  font-size: 12px;
+}
+
+/* TABS */
+
+.tabs {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #171717;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #78ff3b;
+  color: black;
+}
+
+.tab.disabled {
+  opacity: .45;
+}
+
+/* JORNADA */
+
+.jornada-panel {
+  margin-top: 22px;
+}
+
+.jornada-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jornada-arrow {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: none;
+  background: #181818;
+  color: #78ff3b;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.jornada-info {
+  text-align: center;
+}
+
+.jornada-info h2 {
+  font-size: 20px;
+  color: #78ff3b;
+}
+
+.jornada-info p {
+  margin-top: 5px;
+  color: #c5c5c5;
+  font-size: 12px;
+}
+
+/* PARTIDOS */
+
+.partidos-container {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.match-card {
+  background:
+    linear-gradient(
+      180deg,
+      #1d1d1d,
+      #101010
+    );
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.group-label {
+  color: #78ff3b;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.match-time {
+  color: #d4d4d4;
+  font-size: 12px;
+}
+
+.teams-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.team-option {
+  flex: 1;
+  min-height: 84px;
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #181818;
+  color: white;
+  cursor: pointer;
+  padding: 10px 6px;
+  transition: .2s ease;
+}
+
+.team-option.active {
+  border-color: #78ff3b;
+  box-shadow: 0 0 12px rgba(120,255,59,.35);
+  background: rgba(120,255,59,.08);
+}
+
+.team-option img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.team-option h4 {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.draw-option {
+  width: 72px;
+  min-height: 84px;
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #181818;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.draw-option.active {
+  border-color: #78ff3b;
+  background: rgba(120,255,59,.08);
+  box-shadow: 0 0 12px rgba(120,255,59,.35);
+}
+
+/* BOTÓN */
+
+.register-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #78ff3b;
+  color: black;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* NAV */
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: 72px;
+  background: rgba(15,15,15,.96);
+  border-top: 1px solid #333;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+}
+
+.nav-item {
+  color: #d8d8d8;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.nav-item.active {
+  color: #78ff3b;
+}
+
+.nav-item small {
+  font-size: 11px;
+}
+
+/* ESTADOS */
+
+.loading {
+  text-align: center;
+  color: #cfcfcf;
+  margin-top: 30px;
+}

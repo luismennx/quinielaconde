@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Mundial 2026 | Quiniela Conde</title>
+
+  <link rel="stylesheet" href="./mundial.css" />
+</head>
+<body>
+
+  <main class="app">
+
+    <header class="topbar">
+      <img src="../../assets/img/logo.png" alt="Quiniela Conde" class="logo" />
+
+      <div class="top-actions">
+        <button class="icon-btn notification-btn">
+          🔔
+          <span class="badge">2</span>
+        </button>
+
+        <div class="balance">
+          <span>$250.00</span>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero-mundial">
+      <div class="trophy">🏆</div>
+      <div>
+        <h1>MUNDIAL 2026</h1>
+        <p>LA GRAN FIESTA DEL FÚTBOL</p>
+      </div>
+    </section>
+
+    <section class="tabs">
+      <button class="tab active">⚽ Partidos</button>
+      <button class="tab disabled">🏆 Posiciones</button>
+      <button class="tab disabled">🔀 Eliminatorias</button>
+    </section>
+
+    <section class="jornada-panel">
+
+      <div class="jornada-header">
+        <button id="prevJornada" class="jornada-arrow">‹</button>
+
+        <div class="jornada-info">
+          <h2 id="jornadaTitulo">Cargando...</h2>
+          <p id="jornadaFecha">---</p>
+        </div>
+
+        <button id="nextJornada" class="jornada-arrow">›</button>
+      </div>
+
+      <div id="partidosContainer" class="partidos-container">
+        <p class="loading">Cargando partidos...</p>
+      </div>
+
+      <button id="registrarJuegoBtn" class="register-btn">
+        REGISTRAR MI JUEGO
+      </button>
+
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="../perfil/perfil.html" class="nav-item">
+        <span>👤</span>
+        <small>Mi perfil</small>
+      </a>
+
+      <a href="../jugar/jugar.html" class="nav-item active">
+        <span>⚽</span>
+        <small>Jugar</small>
+      </a>
+
+      <a href="../mis-juegos/mis-juegos.html" class="nav-item">
+        <span>🎟️</span>
+        <small>Mis juegos</small>
+      </a>
+
+      <a href="../resultados/resultados.html" class="nav-item">
+        <span>📊</span>
+        <small>Resultados</small>
+      </a>
+    </nav>
+
+  </main>
+
+  <script src="./mundial.js"></script>
+</body>
+</html>
