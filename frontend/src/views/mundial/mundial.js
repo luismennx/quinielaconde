@@ -311,7 +311,6 @@ function formatearRangoFechas(
 }
 
 function obtenerBandera(path) {
-
   if (!path) {
     return "../../assets/img/default-team.png";
   }
@@ -320,9 +319,7 @@ function obtenerBandera(path) {
     return path;
   }
 
-  return `
-    https://quinielaconde.onrender.com${path}
-  `;
+  return `https://quinielaconde.onrender.com${path}`;
 }
 
 prevJornadaBtn.addEventListener(
@@ -360,19 +357,31 @@ nextJornadaBtn.addEventListener(
   }
 );
 
-registrarJuegoBtn.addEventListener(
-  "click",
-  () => {
+registrarJuegoBtn.addEventListener("click", () => {
+  const jornada = jornadas[jornadaActualIndex];
 
-    const jornada =
-      jornadas[jornadaActualIndex];
+  const totalPartidos = document.querySelectorAll(".match-card").length;
+  const totalSelecciones = Object.keys(selecciones).length;
 
-    localStorage.setItem(
-      "quiniela_selecciones",
-      JSON.stringify(selecciones)
-    );
-
-    window.location.href =
-      `../ticket/ticket.html?jornada=${jornada.id}`;
+  if (totalSelecciones < totalPartidos) {
+    alert("Debes seleccionar un pronóstico para cada partido.");
+    return;
   }
-);
+
+  localStorage.setItem(
+    "quiniela_selecciones",
+    JSON.stringify(selecciones)
+  );
+
+  localStorage.setItem(
+    "quiniela_jornada_actual",
+    JSON.stringify(jornada)
+  );
+
+  localStorage.setItem(
+    "quiniela_liga_id",
+    ligaId
+  );
+
+  window.location.href = `../ticket/ticket.html?jornada=${jornada.id}&liga=${ligaId}`;
+});
