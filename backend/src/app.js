@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes.js";
 import { verificarToken } from "./middlewares/auth.middleware.js";
 import userRoutes from "./routes/user.routes.js";
 import deportesRoutes from "./routes/deportes.routes.js";
+import mundialRoutes from "./routes/mundial.routes.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/deportes", deportesRoutes);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/mundial", mundialRoutes);
 
 app.get("/", (req, res) => {
   res.json({
