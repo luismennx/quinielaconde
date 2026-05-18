@@ -74,3 +74,46 @@ export const obtenerPartidosPorJornada = async (req, res) => {
     });
   }
 };
+
+export const obtenerPosicionesMundial = async (req, res) => {
+  try {
+    const { ligaId } = req.params;
+
+    const [rows] = await pool.query(
+      `
+      SELECT
+        id,
+        liga_id,
+        grupo,
+        equipo_nombre,
+        equipo_bandera,
+        pj,
+        g,
+        e,
+        p,
+        gf,
+        gc,
+        dg,
+        pts,
+        orden
+      FROM mundial_posiciones
+      WHERE liga_id = ?
+      ORDER BY grupo ASC, pts DESC, dg DESC, gf DESC, orden ASC
+      `,
+      [ligaId]
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error("Error obteniendo posiciones mundial:", error);
+
+    res.status(500).json({
+      message: "Error interno al obtener posiciones del mundial",
+      debug: {
+        message: error.message,
+        code: error.code,
+        sqlMessage: error.sqlMessage
+      }
+    });
+  }
+};

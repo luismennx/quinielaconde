@@ -331,3 +331,96 @@ body {
   color: #cfcfcf;
   margin-top: 30px;
 }
+
+.hidden {
+  display: none;
+}
+
+/* POSICIONES */
+
+.positions-section {
+  margin-top: 22px;
+}
+
+.positions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.group-table {
+  background:
+    linear-gradient(
+      180deg,
+      #1d1d1d,
+      #101010
+    );
+
+  border: 1px solid #333;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.group-header {
+  background:
+    linear-gradient(
+      90deg,
+      #092400,
+      #0c2f05
+    );
+
+  color: #78ff3b;
+
+  font-weight: bold;
+
+  padding: 12px 14px;
+
+  font-size: 18px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.positions-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.positions-table th {
+  background: #161616;
+  color: #cfcfcf;
+  font-size: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.positions-table td {
+  padding: 12px 8px;
+  border-top: 1px solid #2d2d2d;
+  text-align: center;
+  font-size: 13px;
+}
+
+.team-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 170px;
+}
+
+.team-cell img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.team-name {
+  text-align: left;
+}
+
+.points {
+  color: #78ff3b;
+  font-weight: bold;
+}

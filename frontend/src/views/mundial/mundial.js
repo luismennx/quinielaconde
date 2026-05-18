@@ -22,6 +22,21 @@ const nextJornadaBtn =
 const registrarJuegoBtn =
   document.getElementById("registrarJuegoBtn");
 
+const tabPartidos =
+  document.getElementById("tabPartidos");
+
+const tabPosiciones =
+  document.getElementById("tabPosiciones");
+
+const jornadaPanel =
+  document.querySelector(".jornada-panel");
+
+const posicionesSection =
+  document.getElementById("posicionesSection");
+
+const posicionesContainer =
+  document.getElementById("posicionesContainer");
+
 let jornadas = [];
 
 let jornadaActualIndex = 0;
@@ -385,3 +400,169 @@ registrarJuegoBtn.addEventListener("click", () => {
 
   window.location.href = `../ticket/ticket.html?jornada=${jornada.id}&liga=${ligaId}`;
 });
+
+tabPartidos.addEventListener(
+  "click",
+  () => {
+
+    tabPartidos.classList.add("active");
+    tabPosiciones.classList.remove("active");
+
+    jornadaPanel.classList.remove("hidden");
+
+    posicionesSection.classList.add("hidden");
+  }
+);
+
+tabPosiciones.addEventListener(
+  "click",
+  async () => {
+
+    tabPosiciones.classList.add("active");
+
+    tabPartidos.classList.remove("active");
+
+    jornadaPanel.classList.add("hidden");
+
+    posicionesSection.classList.remove("hidden");
+
+    await cargarPosiciones();
+  }
+);
+
+async function cargarPosiciones() {
+
+  try {
+
+    posicionesContainer.innerHTML = `
+      <p class="loading">
+        Cargando posiciones...
+      </p>
+    `;
+
+    const response = await fetch(
+      `${API_URL}/mundial/${ligaId}/posiciones`
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "No se pudieron cargar posiciones"
+      );
+    }
+
+    const posiciones =
+      await response.json();
+
+    renderPosiciones(posiciones);
+
+  } catch (error) {
+
+    console.error(
+      "Error cargando posiciones:",
+      error
+    );
+
+    posicionesContainer.innerHTML = `
+      <p class="loading">
+        Error cargando posiciones.
+      </p>
+    `;
+  }
+}
+
+function renderPosiciones(posiciones) {
+
+  posicionesContainer.innerHTML = "";
+
+  const grupos = {};
+
+  posiciones.forEach((equipo) => {
+
+    if (!grupos[equipo.grupo]) {
+      grupos[equipo.grupo] = [];
+    }
+
+    grupos[equipo.grupo].push(equipo);
+  });
+
+  Object.keys(grupos).forEach((grupo) => {
+
+    const equipos = grupos[grupo];
+
+    const table =
+      document.createElement("article");
+
+    table.classList.add("group-table");
+
+    table.innerHTML = `
+      <div class="group-header">
+        ${grupo}
+      </div>
+
+      <div class="table-scroll">
+
+        <table class="positions-table">
+
+          <thead>
+            <tr>
+              <th>Equipo</th>
+              <th>PJ</th>
+              <th>G</th>
+              <th>E</th>
+              <th>P</th>
+              <th>GF</th>
+              <th>GC</th>
+              <th>DG</th>
+              <th>PTS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${equipos.map((equipo) => `
+              <tr>
+
+                <td>
+
+                  <div class="team-cell">
+
+                    <img
+                      src="${obtenerBandera(
+                        equipo.equipo_bandera
+                      )}"
+                      alt="${equipo.equipo_nombre}"
+                    >
+
+                    <span class="team-name">
+                      ${equipo.equipo_nombre}
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <td>${equipo.pj}</td>
+                <td>${equipo.g}</td>
+                <td>${equipo.e}</td>
+                <td>${equipo.p}</td>
+                <td>${equipo.gf}</td>
+                <td>${equipo.gc}</td>
+                <td>${equipo.dg}</td>
+
+                <td class="points">
+                  ${equipo.pts}
+                </td>
+
+              </tr>
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+
+    posicionesContainer.appendChild(table);
+  });
+}

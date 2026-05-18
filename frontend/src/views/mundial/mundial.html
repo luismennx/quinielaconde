@@ -37,10 +37,28 @@
     </section>
 
     <section class="tabs">
-      <button class="tab active">⚽ Partidos</button>
-      <button class="tab disabled">🏆 Posiciones</button>
-      <button class="tab disabled">🔀 Eliminatorias</button>
-    </section>
+
+  <button
+    id="tabPartidos"
+    class="tab active"
+  >
+    ⚽ Partidos
+  </button>
+
+  <button
+    id="tabPosiciones"
+    class="tab"
+  >
+    🏆 Posiciones
+  </button>
+
+  <button
+    class="tab disabled"
+  >
+    🔀 Eliminatorias
+  </button>
+
+</section>
 
     <section class="jornada-panel">
 
@@ -64,6 +82,19 @@
       </button>
 
     </section>
+    <section
+  id="posicionesSection"
+  class="positions-section hidden"
+>
+
+  <div
+    id="posicionesContainer"
+    class="positions-container"
+  >
+
+  </div>
+
+</section>
 
     <nav class="bottom-nav">
       <a href="../perfil/perfil.html" class="nav-item">
