@@ -6,6 +6,7 @@ import { verificarToken } from "./middlewares/auth.middleware.js";
 import userRoutes from "./routes/user.routes.js";
 import deportesRoutes from "./routes/deportes.routes.js";
 import mundialRoutes from "./routes/mundial.routes.js";
+import misJuegosRoutes from "./routes/misJuegos.routes.js";
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/deportes", deportesRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/mundial", mundialRoutes);
-
+app.use("/api/mis-juegos", misJuegosRoutes);
 app.get("/", (req, res) => {
   res.json({
     message: "Backend Quiniela Conde funcionando correctamente"

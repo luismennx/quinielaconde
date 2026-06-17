@@ -1,0 +1,323 @@
+:root {
+  --color-bg: #0f0f0f;
+  --color-card: #1a1a1a;
+  --color-card-hover: #232323;
+
+  --color-primary: #00d26a;
+  --color-primary-dark: #00a854;
+
+  --color-text: #ffffff;
+  --color-text-secondary: #a5a5a5;
+
+  --color-border: #2b2b2b;
+
+  --color-warning: #ffb800;
+  --color-success: #00d26a;
+  --color-danger: #ff4d4f;
+  --color-info: #1890ff;
+
+  --radius: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.app {
+  padding: 18px;
+  padding-bottom: 100px;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 42px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.saldo-btn {
+  background: var(--color-primary);
+  border: none;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.plus {
+  margin-left: 4px;
+}
+
+/* ==========================
+   TITULO
+========================== */
+
+.page-header {
+  margin-top: 24px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  color: var(--color-primary);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.description {
+  color: var(--color-text-secondary);
+}
+
+/* ==========================
+   FILTROS ESTADO
+========================== */
+
+.filters-status {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 18px;
+}
+
+.filter-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #222;
+  color: white;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: var(--color-primary);
+  color: black;
+  font-weight: bold;
+}
+
+/* ==========================
+   FILTROS SECUNDARIOS
+========================== */
+
+.filters-extra {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.filters-extra select,
+.filters-extra input {
+  background: #1f1f1f;
+  border: 1px solid var(--color-border);
+  color: white;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+/* ==========================
+   ESTADOS
+========================== */
+
+.estado-carga {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin-top: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ==========================
+   TARJETAS
+========================== */
+
+.tickets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ticket-card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 2px solid transparent;
+}
+
+.ticket-card:hover {
+  background: var(--color-card-hover);
+}
+
+.ticket-card.pendiente {
+  border-color: var(--color-warning);
+}
+
+.ticket-card.en_juego {
+  border-color: var(--color-info);
+}
+
+.ticket-card.ganado {
+  border-color: var(--color-success);
+}
+
+.ticket-card.perdido {
+  border-color: var(--color-danger);
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ticket-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ticket-folio {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.ticket-status {
+  font-weight: bold;
+}
+
+.ticket-info {
+  margin-top: 12px;
+}
+
+.ticket-info p {
+  margin-bottom: 6px;
+}
+
+.ticket-resumen {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.partido {
+  margin-bottom: 8px;
+}
+
+.prediccion {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================
+   BOTON DETALLE
+========================== */
+
+.btn-detalle {
+  margin-top: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--color-primary);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ==========================
+   EMPTY STATE
+========================== */
+
+.empty-state {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 14px;
+}
+
+.primary-btn {
+  margin-top: 20px;
+  border: none;
+  background: var(--color-primary);
+  color: black;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+/* ==========================
+   BOTTOM NAV
+========================== */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: #161616;
+  border-top: 1px solid #262626;
+
+  display: flex;
+  justify-content: space-around;
+
+  padding: 10px 0;
+}
+
+.nav-item {
+  color: #b8b8b8;
+  text-decoration: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-size: 12px;
+}
+
+.nav-item span {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+
+.nav-item.active {
+  color: var(--color-primary);
+}

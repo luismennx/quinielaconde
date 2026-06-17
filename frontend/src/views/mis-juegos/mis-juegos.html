@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Juegos | Quiniela Conde</title>
+
+  <link rel="stylesheet" href="./mis-juegos.css" />
+</head>
+<body>
+
+  <main class="app">
+
+    <header class="topbar">
+      <div class="brand">
+        <img src="../../assets/img/logo.png" alt="Quiniela Conde" class="logo" />
+      </div>
+
+      <div class="top-actions">
+        <button class="icon-btn">🔔</button>
+        <button class="saldo-btn">
+          $<span id="saldoUsuario">0</span>
+          <span class="plus">+</span>
+        </button>
+        <button class="icon-btn">☰</button>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <p class="subtitle">Mundial 2026</p>
+      <h1>MIS JUEGOS</h1>
+      <p class="description">Consulta tus tickets registrados y revisa tus puntos.</p>
+    </section>
+
+    <section class="filters-status">
+      <button class="filter-btn active" data-estado="todos">Todos</button>
+      <button class="filter-btn" data-estado="pendiente">Pendientes</button>
+      <button class="filter-btn" data-estado="en_juego">En juego</button>
+      <button class="filter-btn" data-estado="ganado">Ganados</button>
+      <button class="filter-btn" data-estado="perdido">Perdidos</button>
+    </section>
+
+    <section class="filters-extra">
+      <select id="filtroDeporte">
+        <option value="">Deporte</option>
+        <option value="Fútbol">Fútbol</option>
+      </select>
+
+      <select id="filtroLiga">
+        <option value="">Liga</option>
+        <option value="Mundial 2026">Mundial 2026</option>
+      </select>
+
+      <input type="date" id="filtroFecha" />
+
+      <input type="text" id="buscarFolio" placeholder="Buscar folio" />
+    </section>
+
+    <section id="estadoCarga" class="estado-carga">
+      Cargando tus juegos...
+    </section>
+
+    <section id="listaTickets" class="tickets-list"></section>
+
+    <section id="sinTickets" class="empty-state hidden">
+      <div class="empty-icon">🎟️</div>
+      <h2>No tienes juegos registrados</h2>
+      <p>Cuando registres un ticket, aparecerá aquí.</p>
+      <button id="btnIrJugar" class="primary-btn">Ir a jugar</button>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../perfil/perfil.html" class="nav-item">
+      <span>👤</span>
+      Perfil
+    </a>
+
+    <a href="../jugar/jugar.html" class="nav-item">
+      <span>⚽</span>
+      Jugar
+    </a>
+
+    <a href="./mis-juegos.html" class="nav-item active">
+      <span>🎟️</span>
+      Mis juegos
+    </a>
+
+    <a href="../resultados/resultados.html" class="nav-item">
+      <span>📊</span>
+      Resultados
+    </a>
+
+    <a href="../ranking/ranking.html" class="nav-item">
+      <span>🏆</span>
+      Ranking
+    </a>
+  </nav>
+
+  <script type="module" src="./mis-juegos.js"></script>
+</body>
+</html>
